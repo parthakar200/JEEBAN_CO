@@ -25,6 +25,12 @@ function FAQ({ question, answer }) {
           {answer}
         </div>
       )}
+    <style>{`
+        @keyframes testimonialScroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </div>
   );
 }
@@ -38,6 +44,10 @@ const FAQS = [
 ];
 
 export default function HomePage() {
+  // Pad testimonials so marquee fills screen with no gaps — always 2 copies for seamless -50% loop
+  const _tPad = Array.from({ length: Math.max(1, Math.ceil(5 / TESTIMONIALS.length)) }, () => TESTIMONIALS).flat();
+  const testimonialMarquee = [..._tPad, ..._tPad];
+
   const { services: SERVICES_DATA } = useServices();
   const popularServices = SERVICES_DATA.filter(s => s.isPopular).slice(0, 6);
   const [activeCategory, setActiveCategory] = useState('startup');
@@ -171,23 +181,30 @@ export default function HomePage() {
             <h2 className="section-title">Trusted by India's entrepreneurs</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="card" style={{ padding: 24 }}>
-                <div style={{ display: 'flex', gap: 3, marginBottom: 12 }}>
-                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#f59e0b', fontSize: 14 }}>★</span>)}
-                </div>
-                <p style={{ fontSize: 15, color: '#475569', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: '#e0e7ff', color: '#1a56db', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{t.avatar}</div>
-                  <div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: '#0f172a' }}>{t.name}</div>
-                    <div style={{ fontSize: 12, color: '#94a3b8' }}>{t.role} · {t.location}</div>
-                    <div style={{ fontSize: 12, color: '#1a56db', marginTop: 2 }}>{t.service}</div>
+          {/* Marquee scroll */}
+          <div style={{ overflow: 'hidden', position: 'relative' }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 100, background: 'linear-gradient(to right, #f8fafc, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 100, background: 'linear-gradient(to left, #f8fafc, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            <div style={{ display: 'flex', gap: 20, width: 'max-content', animation: 'testimonialScroll 32s linear infinite' }}
+              onMouseEnter={e => e.currentTarget.style.animationPlayState = 'paused'}
+              onMouseLeave={e => e.currentTarget.style.animationPlayState = 'running'}>
+              {testimonialMarquee.map((t, i) => (
+                <div key={i} className="card" style={{ padding: 24, width: 320, flexShrink: 0 }}>
+                  <div style={{ display: 'flex', gap: 3, marginBottom: 12 }}>
+                    {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#f59e0b', fontSize: 14 }}>★</span>)}
+                  </div>
+                  <p style={{ fontSize: 15, color: '#475569', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 42, height: 42, borderRadius: '50%', background: '#e0e7ff', color: '#1a56db', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{t.avatar}</div>
+                    <div>
+                      <div style={{ fontSize: 15, fontWeight: 600, color: '#0f172a' }}>{t.name}</div>
+                      <div style={{ fontSize: 12, color: '#94a3b8' }}>{t.role} · {t.location}</div>
+                      <div style={{ fontSize: 12, color: '#1a56db', marginTop: 2 }}>{t.service}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>

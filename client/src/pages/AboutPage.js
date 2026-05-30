@@ -5,27 +5,104 @@ import { API } from '../context/AuthContext';
 const MILESTONES = [
   { year: '2016', title: 'Founded in Odisha', desc: 'Started with a mission to simplify business compliance in India' },
   { year: '2017', title: '1,000 Clients', desc: 'Reached our first major milestone of satisfied customers' },
-  { year: '2019', title: 'Business Expansion', desc: 'Opened offices in Bhubaneswar, Soro'},
+  { year: '2019', title: 'Business Expansion', desc: 'Opened offices in Bhubaneswar, Soro' },
   { year: '2021', title: '3,000 Clients', desc: 'Crossed 3K businesses served across India' },
-  { year: '2025', title: '5,000 Clients', desc: 'India\'s largest online corporate services platform' },
+  { year: '2025', title: '5,000 Clients', desc: "India's largest online corporate services platform" },
 ];
+
+function TeamCard({ member, idx, featured }) {
+  const hasPhoto = member.avatar && member.avatar.startsWith('data:');
+  const initials = member.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  return (
+    <div
+      key={idx}
+      style={{
+        position: 'relative',
+        borderRadius: 20,
+        overflow: 'hidden',
+        background: hasPhoto ? '#0f172a' : 'linear-gradient(160deg,#0f172a 0%,#1e3a5f 100%)',
+        width: 260,
+        minHeight: 340,
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        boxShadow: '0 8px 32px rgba(0,0,0,.18)',
+        transition: 'transform 0.22s, box-shadow 0.22s',
+        cursor: 'default',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 18px 48px rgba(0,0,0,.28)'; }}
+      onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,.18)'; }}
+    >
+      {hasPhoto ? (
+        <img
+          src={member.avatar}
+          alt={member.name}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+        />
+      ) : (
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{
+            width: 100, height: 100, borderRadius: '50%',
+            background: 'linear-gradient(135deg, rgba(26,86,219,.7), rgba(124,58,237,.7))',
+            border: '3px solid rgba(255,255,255,.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 38, fontWeight: 900, color: 'white', fontFamily: 'var(--font-heading)',
+          }}>
+            {initials}
+          </div>
+        </div>
+      )}
+      <div style={{
+        position: 'relative', zIndex: 2,
+        background: hasPhoto
+          ? 'linear-gradient(to top, rgba(0,0,0,.95) 0%, rgba(0,0,0,.65) 50%, rgba(0,0,0,.1) 100%)'
+          : 'linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.3) 70%, transparent 100%)',
+        padding: '48px 18px 20px',
+      }}>
+        
+        <h4 style={{ fontSize: 15, fontWeight: 800, color: 'white', marginBottom: 3, fontFamily: 'var(--font-heading)', lineHeight: 1.25 }}>
+          {member.name}
+        </h4>
+        <p style={{ fontSize: 12, color: '#93c5fd', fontWeight: 600, marginBottom: member.bio ? 6 : 0 }}>
+          {member.role}
+        </p>
+        {member.bio && (
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,.58)', lineHeight: 1.5, margin: 0 }}>
+            {member.bio}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function AboutPage() {
   const [team, setTeam] = useState([
-    { name: 'Jeebanjyoti Dashmohapatra', role: 'Founder & CEO', bio: 'M.COM. LLB with 10+ years in corporate law and compliance', avatar: 'JD' },
-    { name: 'Jagannath Jena', role: 'Chartered Accountant (CA)', bio: 'CA CS M.COM. with 5+ years Expert in business process automation and scale', avatar: 'JJ' },
-    { name: 'Madhusudan Behera', role: 'Senior Consultant', bio: 'Led engineering at top fintech companies', avatar: 'AB' },
-    { name: 'Mihir Mohapatra', role: 'Senior Consultant', bio: 'CS with deep expertise in MCA and SEBI regulations', avatar: 'MM' },
+    { name: 'Jeebanjyoti Dashmohapatra', role: 'Founder & Managing Partner', bio: 'M.COM. LLB with 10+ years in corporate law and compliance', avatar: '', isPinned: true },
+    { name: 'Jagannath Jena', role: 'Chartered Accountant (CA)', bio: 'CA CS M.COM. with 5+ years Expert in business process automation and scale', avatar: '', isPinned: true },
+    { name: 'Madhusudan Behera', role: 'Senior Consultant', bio: 'Led engineering at top fintech companies', avatar: '', isPinned: false },
+    { name: 'Mihir Mohapatra', role: 'Senior Consultant', bio: 'CS with deep expertise in MCA and SEBI regulations', avatar: '', isPinned: false },
   ]);
 
   useEffect(() => {
     API.get('/team')
       .then(res => { if (res.data.members?.length > 0) setTeam(res.data.members); })
-      .catch(() => {}); // keep default team if API fails
+      .catch(() => {});
   }, []);
+
+  // Split pinned (top featured) vs rest (marquee)
+  const pinnedTeam  = team.filter(m => m.isPinned).slice(0, 2);
+  const restTeam    = team.filter(m => !m.isPinned);
+  // Pad to at least 6 items so marquee fills the screen, then duplicate for seamless loop
+  const padCount    = restTeam.length > 0 ? Math.max(1, Math.ceil(6 / restTeam.length)) : 1;
+  const paddedRest  = Array.from({ length: padCount }, () => restTeam).flat();
+  // Always exactly 2 copies so translateX(-50%) keyframe is always correct
+  const marqueeTeam = [...paddedRest, ...paddedRest];
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>
+
       {/* Hero */}
       <section style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e293b 100%)', padding: '80px 0', color: 'white' }}>
         <div className="container" style={{ textAlign: 'center' }}>
@@ -75,7 +152,7 @@ export default function AboutPage() {
                 Jeeban & CO was founded in 2016 by a group of Chartered Accountants and Company Secretaries who saw a critical gap: small businesses were struggling to navigate India's complex regulatory landscape without expensive professional help.
               </p>
               <p style={{ fontSize: 16, color: '#475569', lineHeight: 1.8, marginBottom: 20 }}>
-                We set out to democratize access to professional compliance services — making them affordable, transparent, and fully online. Today, we're India's largest corporate services platform, serving 5K+ businesses with AI-powered automation.
+                We set out to democratize access to professional compliance services — making them affordable, transparent, and fully online. Today, we serve 5K+ businesses with expert-backed support.
               </p>
               <p style={{ fontSize: 16, color: '#475569', lineHeight: 1.8 }}>
                 Our platform handles everything from company incorporation and GST filing to trademark registration and payroll management — all under one roof.
@@ -86,7 +163,7 @@ export default function AboutPage() {
                 {[
                   { icon: '🎯', title: 'Our Mission', desc: 'Make every Indian business compliant, confident, and successful through accessible, tech-driven services.' },
                   { icon: '👁️', title: 'Our Vision', desc: 'To be the trusted compliance partner for every business in India — from idea to exit.' },
-                  { icon: '💡', title: 'Our Approach', desc: 'Combine AI automation with human expertise to deliver fast, accurate, and affordable compliance services.' },
+                  { icon: '💡', title: 'Our Approach', desc: 'Combine expert knowledge with technology to deliver fast, accurate, and affordable compliance services.' },
                   { icon: '🤝', title: 'Our Promise', desc: 'Transparent pricing, expert support, and a 30-day money-back guarantee on every service.' },
                 ].map(item => (
                   <div key={item.title} style={{ padding: 24, background: '#f8fafc', borderRadius: 16, border: '1px solid #e2e8f0' }}>
@@ -132,84 +209,39 @@ export default function AboutPage() {
             <h2 className="section-title">Meet our team</h2>
             <p className="section-desc" style={{ margin: '0 auto' }}>Led by seasoned professionals from law, finance, and technology</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }} className="team-grid">
-            {team.map(member => {
-              const hasPhoto = member.avatar && member.avatar.startsWith('data:');
-              const initials = member.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-              return (
-                <div key={member.name} style={{
-                  position: 'relative',
-                  borderRadius: 20,
-                  overflow: 'hidden',
-                  background: hasPhoto ? '#0f172a' : 'linear-gradient(160deg,#0f172a 0%,#1e3a5f 100%)',
-                  minHeight: 340,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  boxShadow: '0 8px 32px rgba(0,0,0,.18)',
-                  transition: 'transform 0.22s, box-shadow 0.22s',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-5px)'; e.currentTarget.style.boxShadow='0 18px 48px rgba(0,0,0,.28)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow='0 8px 32px rgba(0,0,0,.18)'; }}>
 
-                  {/* Background: photo fills card OR initials centered */}
-                  {hasPhoto ? (
-                    <img
-                      src={member.avatar}
-                      alt={member.name}
-                      style={{
-                        position: 'absolute', top: 0, left: 0,
-                        width: '100%', height: '100%',
-                        objectFit: 'cover', objectPosition: 'center top',
-                        display: 'block',
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      position: 'absolute', top: 0, left: 0, right: 0, bottom: 80,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <div style={{
-                        width: 100, height: 100, borderRadius: '50%',
-                        background: 'linear-gradient(135deg, rgba(26,86,219,.7), rgba(124,58,237,.7))',
-                        border: '3px solid rgba(255,255,255,.15)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 38, fontWeight: 900, color: 'white',
-                        fontFamily: 'var(--font-heading)',
-                      }}>
-                        {initials}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Bottom gradient overlay — always on top of photo */}
-                  <div style={{
-                    position: 'relative', zIndex: 2,
-                    background: hasPhoto
-                      ? 'linear-gradient(to top, rgba(0,0,0,.95) 0%, rgba(0,0,0,.65) 50%, rgba(0, 0, 0, 0) 100%)'
-                      : 'linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.3) 70%, transparent 100%)',
-                    padding: '48px 18px 20px',
-                  }}>
-                    {/* <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '1.5px', color: '#22c55e', textTransform: 'uppercase', marginBottom: 5 }}>
-                      TEAM MEMBER
-                    </div> */}
-                    <h4 style={{ fontSize: 15, fontWeight: 800, color: 'white', marginBottom: 3, fontFamily: 'var(--font-heading)', lineHeight: 1.25 }}>
-                      {member.name}
-                    </h4>
-                    <p style={{ fontSize: 12, color: '#93c5fd', fontWeight: 600, marginBottom: member.bio ? 6 : 0 }}>
-                      {member.role}
-                    </p>
-                    {member.bio && (
-                      <p style={{ fontSize: 11, color: 'rgba(255,255,255,.58)', lineHeight: 1.5, margin: 0 }}>
-                        {member.bio}
-                      </p>
-                    )}
-                  </div>
+          {/* Pinned featured cards — up to 2, centered */}
+          {pinnedTeam.length > 0 && (
+            <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 36, flexWrap: 'wrap' }}>
+              {pinnedTeam.map((member, idx) => (
+                <div key={idx} style={{ width: 300 }}>
+                  <TeamCard member={member} idx={idx} featured />
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
+
+        <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '1.5px', textAlign: 'center', color: '#22c55e', textTransform: 'uppercase', marginBottom: 5 }}>
+          TEAM MEMBER'S
+        </div>
+
+        {/* Marquee — remaining members, full width */}
+        {marqueeTeam.length > 0 && (
+          <div style={{ overflow: 'hidden', position: 'relative' }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 100, background: 'linear-gradient(to right, white, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 100, background: 'linear-gradient(to left, white, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            <div
+              style={{ display: 'flex', gap: 20, width: 'max-content', padding: '8px 20px 16px', animation: `marqueeScroll ${Math.max(16, paddedRest.length * 4)}s linear infinite` }}
+              onMouseEnter={e => { e.currentTarget.style.animationPlayState = 'paused'; }}
+              onMouseLeave={e => { e.currentTarget.style.animationPlayState = 'running'; }}
+            >
+              {marqueeTeam.map((member, idx) => (
+                <TeamCard key={idx} member={member} idx={idx} />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Awards & certifications */}
@@ -239,8 +271,12 @@ export default function AboutPage() {
       </section>
 
       <style>{`
+        @keyframes marqueeScroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
         @media (max-width: 768px) {
-          .mission-layout, .team-grid { grid-template-columns: 1fr !important; }
+          .mission-layout { grid-template-columns: 1fr !important; }
           .stats-bar { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>

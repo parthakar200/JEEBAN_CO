@@ -757,6 +757,19 @@ function TeamTab() {
     } catch { toast.error('Failed'); }
   };
 
+  const togglePin = async (m) => {
+    const pinned = members.filter(x => x.isPinned && x._id !== m._id);
+    if (!m.isPinned && pinned.length >= 2) {
+      toast.error('Only 2 members can be pinned at the top. Unpin one first.');
+      return;
+    }
+    try {
+      const res = await API.put(`/team/${m._id}`, { isPinned: !m.isPinned });
+      setMembers(prev => prev.map(x => x._id === m._id ? res.data.member : x));
+      toast.success(!m.isPinned ? '📌 Pinned to top section' : 'Unpinned from top section');
+    } catch { toast.error('Failed'); }
+  };
+
   const deleteMember = async (id) => {
     if (!window.confirm('Delete this team member?')) return;
     try {
@@ -878,8 +891,20 @@ function TeamTab() {
               {m.bio && <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.5, margin: '0 0 10px' }}>{m.bio}</p>}
               {m.email && <div style={{ fontSize: 12, color: '#94a3b8' }}>✉️ {m.email}</div>}
               {m.phone && <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>📞 {m.phone}</div>}
-              <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+              {/* Pin badge */}
+              {m.isPinned && (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 99, padding: '2px 10px', fontSize: 11, fontWeight: 700, color: '#d97706', marginTop: 10 }}>
+                  📌 Pinned to top
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
                 <button onClick={() => startEdit(m)} style={{ flex: 1, background: '#f1f5f9', border: 'none', borderRadius: 8, padding: '7px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#475569' }}>✏️ Edit</button>
+                <button onClick={() => togglePin(m)}
+                  style={{ flex: 1, background: m.isPinned ? '#fffbeb' : '#f5f3ff', border: 'none', borderRadius: 8, padding: '7px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: m.isPinned ? '#d97706' : '#7c3aed' }}>
+                  {m.isPinned ? '📌 Unpin' : '📌 Pin top'}
+                </button>
+              </div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                 <button onClick={() => toggleActive(m)} style={{ flex: 1, background: m.isActive ? '#fffbeb' : '#f0fdf4', border: 'none', borderRadius: 8, padding: '7px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: m.isActive ? '#d97706' : '#16a34a' }}>
                   {m.isActive ? '🙈 Hide' : '👁 Show'}
                 </button>

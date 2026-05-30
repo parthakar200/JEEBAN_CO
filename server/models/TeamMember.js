@@ -7,6 +7,7 @@ const teamMemberSchema = new mongoose.Schema({
   phone: { type: String, trim: true },
   bio: { type: String, default: '' },
   avatar: { type: String, default: '' },   // base64 image data URL or initials
+  isPinned: { type: Boolean, default: false }, // show as featured card above marquee
   isActive: { type: Boolean, default: true },
   order: { type: Number, default: 0 },      // display order
   createdAt: { type: Date, default: Date.now }
