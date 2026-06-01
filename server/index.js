@@ -24,16 +24,16 @@ app.use('/api/leads', require('./routes/leads'));
 app.use('/api/team', require('./routes/team'));
 
 // Health check
-app.get('/api/health', (req, res) => res.json({ status: 'OK', message: 'IndiaFilings API Running' }));
+app.get('/api/health', (req, res) => res.json({ status: 'OK', message: 'jeebanco API Running' }));
 
 // Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../client/build/index.html')));
-}
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '../client/build')));
+//   app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../client/build/index.html')));
+// }
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/indiafilings';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/jeebanco';
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Error:', err));
