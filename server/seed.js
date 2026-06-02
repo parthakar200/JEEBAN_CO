@@ -148,7 +148,7 @@ async function seed() {
       role: 'admin',
       isVerified: true,
     });
-    console.log('✅ Admin user created: admin@jeebanco.com / admin@123');
+    console.log('✅ Admin user created: admin@jeebanco.com / Admin@123');
 
     console.log('\n🎉 Database seeded successfully!');
     process.exit(0);
