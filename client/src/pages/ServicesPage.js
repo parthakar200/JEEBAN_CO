@@ -27,7 +27,7 @@ export default function ServicesPage() {
     if (priceSort === 'asc') list = [...list].sort((a, b) => a.price.base - b.price.base);
     if (priceSort === 'desc') list = [...list].sort((a, b) => b.price.base - a.price.base);
     return list;
-  }, [activeCategory, search, priceSort]);
+  }, [activeCategory, search, priceSort,SERVICES_DATA]);
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>

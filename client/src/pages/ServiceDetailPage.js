@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+//import { useAuth } from '../context/AuthContext';
 import { useServices } from '../context/ServicesContext';
 import { BUSINESS_PHONE, BUSINESS_PHONE_DISPLAY } from '../utils/constants';
 import { SERVICES_DATA } from '../utils/servicesData';
@@ -14,7 +14,7 @@ function loadDocOverrides() {
 
 export default function ServiceDetailPage() {
   const { slug } = useParams();
-  const { user } = useAuth();
+  //const { user } = useAuth();
   const navigate = useNavigate();
   const { services } = useServices();
   const [tab, setTab] = useState('overview');
