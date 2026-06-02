@@ -140,7 +140,7 @@ async function seed() {
     console.log(`✅ Seeded ${SERVICES.length} services`);
 
     // Create admin user
-    const hashedPassword = await bcrypt.hash('admin@123', 12);
+    const hashedPassword = await bcrypt.hash('Admin@123', 12);
     await User.create({
       name: 'Admin User',
       email: 'admin@jeebanco.com',
