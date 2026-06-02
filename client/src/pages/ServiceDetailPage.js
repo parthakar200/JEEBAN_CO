@@ -235,7 +235,8 @@ export default function ServiceDetailPage() {
               </button>
 
               <a href={`tel:${BUSINESS_PHONE}`} className="btn btn-ghost" style={{ width: '100%', justifyContent: 'center', padding: 14, borderRadius: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-                📞 Talk to an Expert &nbsp;<span style={{ fontSize: 12, color: '#94a3b8' }}>{BUSINESS_PHONE_DISPLAY}</span>
+                📞 Talk to an experts
+                 {/* &nbsp;<span style={{ fontSize: 12, color: '#94a3b8' }}>{BUSINESS_PHONE_DISPLAY}</span> */}
               </a>
 
               <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
