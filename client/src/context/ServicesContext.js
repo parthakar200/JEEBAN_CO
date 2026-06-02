@@ -6,22 +6,28 @@ const CUSTOM_KEY  = 'admin_custom_services';
 
 const ServicesContext = createContext(null);
 
-function applyOverrides() {
+function applyOverrides(dbServices) {
   let overrides = {};
   let customServices = [];
   try { overrides = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch {}
   try { customServices = JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; } catch {}
 
+  // Build a map of slug -> priceHidden from DB (source of truth)
+  const dbMap = {};
+  (dbServices || []).forEach(s => { dbMap[s.slug] = s; });
+
   const process = (s) => {
     const ov = overrides[s.id] || {};
-    const base         = ov.base         !== undefined ? ov.base         : s.price.base;
+    const base          = ov.base          !== undefined ? ov.base          : s.price.base;
     const governmentFee = ov.governmentFee !== undefined ? ov.governmentFee : (s.price.governmentFee || 0);
-    const total        = Math.round(base + (base * 0.18) + governmentFee);
+    const total         = Math.round(base + (base * 0.18) + governmentFee);
+    // priceHidden: DB is source of truth; fall back to localStorage override
+    const priceHidden   = dbMap[s.slug]?.priceHidden ?? ov.priceHidden ?? false;
     return {
       ...s,
       price: { ...s.price, base, governmentFee, total },
-      hidden:      ov.hidden      ?? false,
-      priceHidden: ov.priceHidden ?? false,
+      hidden:      ov.hidden ?? false,
+      priceHidden,
     };
   };
 
@@ -29,11 +35,17 @@ function applyOverrides() {
 }
 
 export function ServicesProvider({ children }) {
-  const [allServices, setAllServices] = useState(applyOverrides);
+  const [allServices, setAllServices] = useState(() => applyOverrides([]));
 
-  const refresh = useCallback(() => setAllServices(applyOverrides()), []);
+  const refresh = useCallback(() => {
+    fetch('/api/services?limit=100')
+      .then(r => r.json())
+      .then(data => setAllServices(applyOverrides(data.services || [])))
+      .catch(() => setAllServices(applyOverrides([])));
+  }, []);
 
   useEffect(() => {
+    refresh();
     window.addEventListener('storage', refresh);
     window.addEventListener('admin_service_update', refresh);
     return () => {

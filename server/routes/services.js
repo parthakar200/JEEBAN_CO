@@ -45,6 +45,21 @@ router.post('/', protect, adminOnly, async (req, res) => {
   }
 });
 
+// PATCH /api/services/slug/:slug - Admin update by slug (used for priceHidden toggle)
+router.patch('/slug/:slug', protect, adminOnly, async (req, res) => {
+  try {
+    const service = await Service.findOneAndUpdate(
+      { slug: req.params.slug },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!service) return res.status(404).json({ success: false, message: 'Service not found' });
+    res.json({ success: true, service });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // PUT /api/services/:id - Admin update service
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {

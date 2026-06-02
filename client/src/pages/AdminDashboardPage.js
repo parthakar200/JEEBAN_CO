@@ -313,11 +313,20 @@ function ServicesTab() {
     toast.success(!ov.hidden ? `"${s.name}" hidden from website` : `"${s.name}" is now visible`);
   };
 
-  const togglePriceHide = (s) => {
+  const togglePriceHide = async (s) => {
     const ov = overrides[s.id] || {};
-    const next = { ...overrides, [s.id]: { ...ov, priceHidden: !ov.priceHidden } };
+    const newVal = !ov.priceHidden;
+
+    try {
+      await API.patch(`/services/slug/${s.slug}`, { priceHidden: newVal });
+    } catch {
+      toast.error('Failed to save — check server connection');
+      return;
+    }
+
+    const next = { ...overrides, [s.id]: { ...ov, priceHidden: newVal } };
     saveOverrides(next);
-    toast.success(!ov.priceHidden ? 'Price hidden — "Contact us" shown instead' : 'Price visible again');
+    toast.success(newVal ? 'Price hidden — "Contact us" shown instead' : 'Price visible again');
   };
 
   const startEdit = (s) => {
