@@ -3,10 +3,8 @@ import toast from 'react-hot-toast';
 import { API } from '../context/AuthContext';
 
 const OFFICES = [
-  { city: 'Chennai (HQ)', address: 'No.1, 8th Floor, North Wing, Arihant Nitco Park, Rajiv Gandhi Salai, Perungudi, Chennai – 600 096', phone: '+91 8069029097' },
-  { city: 'Bangalore', address: '2nd Floor, Prestige Meridian, MG Road, Bangalore – 560 001', phone: '+91 8069029098' },
-  { city: 'Mumbai', address: '14th Floor, One BKC, Bandra Kurla Complex, Mumbai – 400 051', phone: '+91 8069029099' },
-  { city: 'Delhi', address: '4th Floor, Tower B, Unitech Cyber Park, Sector 39, Gurgaon – 122 001', phone: '+91 8069029100' },
+  { city: 'Soro (HQ)', address: 'No.1, 2nd Floor, Near Sai Ananta Plaza, Uttareswar, Soro, Baleshwar – 756 045', phone: '+91 9692195476' },
+  { city: 'Bhubaneswar', address: '1st Floor, Jaydev Bihar, Bhubaneswar – 751 013', phone: '+91 9692195476' },
 ];
 
 export default function ContactPage() {
@@ -47,9 +45,9 @@ export default function ContactPage() {
         <div className="container">
           <div style={{ display: 'flex', gap: 40, justifyContent: 'center', flexWrap: 'wrap' }}>
             {[
-              { icon: '📞', label: 'Call Us', value: '+91 8069029097', sub: 'Mon–Sat 9AM–7PM' },
-              { icon: '📧', label: 'Email Us', value: 'support@indiafilings.com', sub: 'Response in 24 hrs' },
-              { icon: '💬', label: 'Live Chat', value: 'Chat with Expert', sub: 'Available now' },
+              { icon: '📞', label: 'Call Us', value: '+91 9692195476', sub: 'Mon–Sat 9AM–10PM' },
+              { icon: '📧', label: 'Email Us', value: 'advjeeban@gmail.com', sub: 'Response in 24 hrs' },
+              { icon: '💬', label: 'Live Chat', value: 'Chat with Expert', sub: 'Not Available now' },
             ].map(c => (
               <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'white' }}>
                 <span style={{ fontSize: 24 }}>{c.icon}</span>
