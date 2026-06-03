@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { SERVICES_DATA } from '../utils/servicesData';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 const STEPS = ['Business Details', 'Documents', 'Payment'];
 
@@ -41,6 +42,13 @@ export default function CheckoutPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh', background: '#f8fafc' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
+
       <div className="container" style={{ padding: '36px 24px' }}>
         {/* Breadcrumb */}
         <nav style={{ fontSize: 13, color: '#64748b', marginBottom: 28, display: 'flex', alignItems: 'center', gap: 8 }}>

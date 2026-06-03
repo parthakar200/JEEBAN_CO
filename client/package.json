@@ -10,14 +10,14 @@
     "framer-motion": "^10.16.16",
     "lucide-react": "^0.303.0",
     "react": "^18.2.0",
+    "react-countup": "^6.5.0",
     "react-dom": "^18.2.0",
-    "react-helmet-async": "^2.0.4",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.49.2",
     "react-hot-toast": "^2.4.1",
+    "react-intersection-observer": "^9.5.3",
     "react-router-dom": "^6.21.0",
     "react-scripts": "5.0.1",
-    "react-countup": "^6.5.0",
-    "react-intersection-observer": "^9.5.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -27,11 +27,21 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app"]
+    "extends": [
+      "react-app"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "proxy": "https://jeeban-co-api.onrender.com"
 }

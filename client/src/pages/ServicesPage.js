@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import ServiceCard from '../components/ui/ServiceCard';
 import { CATEGORIES } from '../utils/servicesData';
 import { useServices } from '../context/ServicesContext';
+import { Helmet } from 'react-helmet-async';
 
 export default function ServicesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,6 +32,13 @@ export default function ServicesPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
+
       {/* Header */}
       <div style={{ background: 'linear-gradient(135deg, #f0f4ff, #f8fafc)', padding: '48px 0 36px', borderBottom: '1px solid #e2e8f0' }}>
         <div className="container">

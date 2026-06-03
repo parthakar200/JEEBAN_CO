@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { API } from '../context/AuthContext';
+import { Helmet } from 'react-helmet-async';
 
 const OFFICES = [
   { city: 'Soro (HQ)', address: '1st Floor, Near Sai Ananta Plaza, Uttareswar, Soro, Baleshwar – 756 045', phone: '+91 9692195476' },
@@ -31,6 +32,13 @@ export default function ContactPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
+
       {/* Header */}
       <div style={{ background: 'linear-gradient(135deg, #f0f4ff, #f8fafc)', padding: '56px 0 48px', borderBottom: '1px solid #e2e8f0' }}>
         <div className="container" style={{ textAlign: 'center' }}>

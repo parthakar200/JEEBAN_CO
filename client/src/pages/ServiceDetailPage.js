@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useServices } from '../context/ServicesContext';
 import { BUSINESS_PHONE } from '../utils/constants';
 import { SERVICES_DATA } from '../utils/servicesData';
+import { Helmet } from 'react-helmet-async';
 
 const DOC_STORAGE_KEY      = 'admin_service_documents';
 const CONTENT_STORAGE_KEY  = 'admin_service_content';
@@ -57,6 +58,13 @@ export default function ServiceDetailPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
+
       {/* Breadcrumb */}
       <div style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '12px 0' }}>
         <div className="container">

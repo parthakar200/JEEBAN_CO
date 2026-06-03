@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { API } from '../context/AuthContext';
 import { SERVICES_DATA } from '../utils/servicesData';
 import newAdvLogo from '../assets/images/newAdvLogo.png';
+import { Helmet } from 'react-helmet-async';
 
 const SERVICE_OPTIONS = [
   { value: '', label: 'Select a service (optional)' },
@@ -46,6 +47,13 @@ export default function RegisterPage() {
   if (submitted) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', paddingTop: 'var(--nav-height)' }}>
+        {/* For Search Engine Optimization */}
+              <Helmet>
+                <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+                <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+                <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+              </Helmet>
+
         <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 24, padding: '56px 48px', textAlign: 'center', maxWidth: 460, width: '90%', boxShadow: '0 8px 40px rgba(0,0,0,.08)' }}>
           <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 36 }}>✅</div>
           <h2 style={{ fontSize: 26, fontFamily: 'var(--font-heading)', fontWeight: 800, marginBottom: 10 }}>You're all set!</h2>

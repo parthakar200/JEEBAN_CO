@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 import newAdvLogo from '../assets/images/newAdvLogo.png';
+import { Helmet } from 'react-helmet-async';
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -42,6 +43,13 @@ export default function LoginPage() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', background: '#f8fafc', paddingTop: 'var(--nav-height)' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
+
       {/* Left decorative panel */}
       <div style={{
         flex: 1, background: 'linear-gradient(160deg, #1a56db 0%, #1240a8 100%)',

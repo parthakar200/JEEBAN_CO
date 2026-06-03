@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { API } from '../context/AuthContext';
 import { SERVICES_DATA } from '../utils/servicesData';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -1006,6 +1007,12 @@ function MessagesTab() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 380px' : '1fr', gap: 20 }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
       <Card>
         <div style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: 12 }}>
           <SectionTitle>Contact Messages</SectionTitle>
@@ -1127,6 +1134,12 @@ export default function AdminDashboardPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh', background: '#f8fafc' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
       <div className="container" style={{ padding: '32px 24px' }}>
         {/* Header */}
         <div style={{ marginBottom: 28 }}>

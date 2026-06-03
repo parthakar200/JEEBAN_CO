@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { API } from '../context/AuthContext';
+import { Helmet } from 'react-helmet-async';
 
 const MILESTONES = [
   { year: '2016', title: 'Founded in Odisha', desc: 'Started with a mission to simplify business compliance in India' },
@@ -103,6 +104,12 @@ export default function AboutPage() {
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)', minHeight: '100vh' }}>
+      {/* For Search Engine Optimization */}
+            <Helmet>
+              <title>Jeeban & Co. - Company Registration, GST, ITR, Trademark India</title>
+              <meta name="description" content="India's trusted platform for company registration, GST filing, trademark, and income tax services. Based in Soro, Baleshwar, Bhubaneswar, Odisha." />
+              <meta name="keywords" content="company registration Bhubaneswar, GST registration Odisha, ITR filing Baleshwar, Project Funding, trademark India" />
+            </Helmet>
 
       {/* Hero */}
       <section style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e293b 100%)', padding: '80px 0', color: 'white' }}>
