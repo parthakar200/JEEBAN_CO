@@ -4,10 +4,12 @@ const Service = require('../models/Service');
 const { protect, adminOnly } = require('../middleware/auth');
 
 // GET /api/services - All services (with filters)
+// Pass ?all=true to include inactive services (used by ServicesContext to reflect admin changes)
 router.get('/', async (req, res) => {
   try {
-    const { category, search, popular, limit = 20, page = 1 } = req.query;
-    const filter = { isActive: true };
+    const { category, search, popular, limit = 20, page = 1, all } = req.query;
+    // By default only show active services; ?all=true returns everything (for context/admin)
+    const filter = all === 'true' ? {} : { isActive: true };
     if (category) filter.category = category;
     if (popular === 'true') filter.isPopular = true;
     if (search) filter.$text = { $search: search };

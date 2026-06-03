@@ -1,69 +1,89 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { SERVICES_DATA } from '../utils/servicesData';
 
-const STORAGE_KEY = 'admin_service_overrides';
-const CUSTOM_KEY  = 'admin_custom_services';
-const API_BASE    = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+// Fallback map from hardcoded data, keyed by slug
+const FALLBACK_MAP = {};
+SERVICES_DATA.forEach(s => { FALLBACK_MAP[s.slug] = s; });
 
 const ServicesContext = createContext(null);
 
-function applyOverrides(dbServices) {
-  let overrides = {};
-  let customServices = [];
-  try { overrides = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch {}
-  try { customServices = JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; } catch {}
-
-  // Build a map of slug -> DB service (source of truth for priceHidden)
+/**
+ * Merge DB record (source of truth for price/hidden/priceHidden)
+ * with hardcoded data (source of truth for features/docs/process/icon).
+ * If a service exists in DB, DB wins for all admin-editable fields.
+ * If a service only exists in hardcoded data (not yet seeded), use hardcoded values.
+ */
+function mergeServices(dbServices) {
   const dbMap = {};
   (dbServices || []).forEach(s => { dbMap[s.slug] = s; });
 
-  const process = (s) => {
-    const ov = overrides[s.id] || {};
-    const base          = ov.base          !== undefined ? ov.base          : s.price.base;
-    const governmentFee = ov.governmentFee !== undefined ? ov.governmentFee : (s.price.governmentFee || 0);
-    const total         = Math.round(base + (base * 0.18) + governmentFee);
-    // priceHidden comes from DB — all users see the same value
-    const priceHidden   = dbMap[s.slug]?.priceHidden ?? ov.priceHidden ?? false;
+  // Start from hardcoded list to preserve ordering and non-DB services
+  const merged = SERVICES_DATA.map(local => {
+    const db = dbMap[local.slug];
+    if (!db) {
+      // Not in DB yet — use hardcoded defaults, visible by default
+      return { ...local, hidden: false, priceHidden: false };
+    }
+    const base = db.price?.base ?? local.price.base;
+    const governmentFee = db.price?.governmentFee ?? local.price.governmentFee ?? 0;
+    const total = Math.round(base + (base * 0.18) + governmentFee);
     return {
-      ...s,
-      price: { ...s.price, base, governmentFee, total },
-      hidden:      ov.hidden ?? false,
-      priceHidden,
+      ...local,
+      // DB wins for admin-controlled fields
+      price: { ...local.price, base, governmentFee, total },
+      priceHidden: db.priceHidden ?? false,
+      // isActive=false in DB means admin hid it
+      hidden: db.isActive === false,
     };
-  };
+  });
 
-  return [...SERVICES_DATA, ...customServices].map(process);
+  // Also append any DB services not in SERVICES_DATA (custom/new ones)
+  (dbServices || []).forEach(db => {
+    if (!FALLBACK_MAP[db.slug]) {
+      const base = db.price?.base ?? 0;
+      const governmentFee = db.price?.governmentFee ?? 0;
+      const total = Math.round(base + (base * 0.18) + governmentFee);
+      merged.push({
+        ...db,
+        id: db._id,
+        price: { base, governmentFee, total },
+        priceHidden: db.priceHidden ?? false,
+        hidden: db.isActive === false,
+      });
+    }
+  });
+
+  return merged;
 }
 
 export function ServicesProvider({ children }) {
-  const [allServices, setAllServices] = useState(() => applyOverrides([]));
+  const [allServices, setAllServices] = useState(() => mergeServices([]));
 
   const refresh = useCallback(() => {
-    fetch(`${API_BASE}/services?limit=100`)
-      .then(r => r.json())
-      .then(data => setAllServices(applyOverrides(data.services || [])))
-      .catch(() => setAllServices(applyOverrides([])));
+    fetch(`${API_BASE}/services?limit=100&all=true`)
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(data => setAllServices(mergeServices(data.services || [])))
+      .catch(() => {
+        // Fallback to hardcoded data if server is unreachable
+        setAllServices(mergeServices([]));
+      });
   }, []);
 
   useEffect(() => {
-    // Initial load
     refresh();
-
-    // Re-fetch when admin makes a change on the same browser
-    window.addEventListener('storage', refresh);
+    // Re-fetch when admin saves a change (same tab)
     window.addEventListener('admin_service_update', refresh);
-
-    // Poll every 30s so OTHER browsers/devices pick up admin changes automatically
+    // Poll every 30s so other browsers/devices pick up changes
     const poll = setInterval(refresh, 30000);
-
     return () => {
-      window.removeEventListener('storage', refresh);
       window.removeEventListener('admin_service_update', refresh);
       clearInterval(poll);
     };
   }, [refresh]);
 
-  const services            = allServices.filter(s => !s.hidden);
+  const services             = allServices.filter(s => !s.hidden);
   const allServicesIncHidden = allServices;
 
   return (
