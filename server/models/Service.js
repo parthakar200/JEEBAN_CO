@@ -30,7 +30,7 @@ const serviceSchema = new mongoose.Schema({
   }],
   isPopular: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
-  priceHidden: { type: Boolean, default: false },
+  priceHidden: { type: Boolean, default: true },
   rating: { type: Number, default: 4.5, min: 0, max: 5 },
   reviewCount: { type: Number, default: 0 },
   icon: String,
