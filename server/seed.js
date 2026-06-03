@@ -30,18 +30,6 @@ const User = mongoose.model('User', userSchema);
 const Service = mongoose.model('Service', serviceSchema);
 
 
-const TeamMember = require('./models/TeamMember');
-
-await TeamMember.deleteMany({});
-await TeamMember.insertMany([
-  { name: 'Jeebanjyoti Dashmohapatra', role: 'Founder & Managing Partner', bio: 'M.COM. LLB with 10+ years in corporate law and compliance', avatar: '', isPinned: true, order: 1 },
-  { name: 'Jagannath Jena', role: 'Chartered Accountant (CA)', bio: 'CA CS M.COM. with 5+ years Expert in business process automation and scale', avatar: '', isPinned: true, order: 2 },
-  { name: 'Madhusudan Behera', role: 'Senior Consultant', bio: 'Led engineering at top fintech companies', avatar: '', isPinned: false, order: 3 },
-  { name: 'Mihir Mohapatra', role: 'Senior Consultant', bio: 'CS with deep expertise in MCA and SEBI regulations', avatar: '', isPinned: false, order: 4 },
-]);
-console.log('✅ Seeded 4 team members');
-
-
 const SERVICES = [
   {
     name: 'Private Limited Company Registration',
@@ -291,6 +279,17 @@ async function seed() {
     await Service.deleteMany({});
     await User.deleteMany({ role: 'admin' });
     console.log('🗑️  Cleared existing services and admin user');
+
+    const TeamMember = require('./models/TeamMember');
+
+await TeamMember.deleteMany({});
+await TeamMember.insertMany([
+  { name: 'Jeebanjyoti Dashmohapatra', role: 'Founder & Managing Partner', bio: 'M.COM. LLB with 10+ years in corporate law and compliance', avatar: '', isPinned: true, order: 1 },
+  { name: 'Jagannath Jena', role: 'Chartered Accountant (CA)', bio: 'CA CS M.COM. with 5+ years Expert in business process automation and scale', avatar: '', isPinned: true, order: 2 },
+  { name: 'Madhusudan Behera', role: 'Senior Consultant', bio: 'Led engineering at top fintech companies', avatar: '', isPinned: false, order: 3 },
+  { name: 'Mihir Mohapatra', role: 'Senior Consultant', bio: 'CS with deep expertise in MCA and SEBI regulations', avatar: '', isPinned: false, order: 4 },
+]);
+console.log('✅ Seeded 4 team members');
 
     // Create services
     await Service.insertMany(SERVICES);
