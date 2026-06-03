@@ -3,8 +3,8 @@ import toast from 'react-hot-toast';
 import { API } from '../context/AuthContext';
 
 const OFFICES = [
-  { city: 'Soro (HQ)', address: 'No.1, 2nd Floor, Near Sai Ananta Plaza, Uttareswar, Soro, Baleshwar – 756 045', phone: '+91 9692195476' },
-  { city: 'Bhubaneswar', address: '1st Floor, Jaydev Bihar, Bhubaneswar – 751 013', phone: '+91 9692195476' },
+  { city: 'Soro (HQ)', address: '1st Floor, Near Sai Ananta Plaza, Uttareswar, Soro, Baleshwar – 756 045', phone: '+91 9692195476' },
+  { city: 'Bhubaneswar', address: 'Ground Floor, Near Jagannath Rest House, Jaydev Bihar, Bhubaneswar – 751 013', phone: '+91 9692195476' },
 ];
 
 export default function ContactPage() {
