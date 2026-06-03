@@ -78,12 +78,13 @@ function TeamCard({ member, idx, featured }) {
 }
 
 export default function AboutPage() {
-  const [team, setTeam] = useState([
-    { name: 'Jeebanjyoti Dashmohapatra', role: 'Founder & Managing Partner', bio: 'M.COM. LLB with 10+ years in corporate law and compliance', avatar: '', isPinned: true },
-    { name: 'Jagannath Jena', role: 'Chartered Accountant (CA)', bio: 'CA CS M.COM. with 5+ years Expert in business process automation and scale', avatar: '', isPinned: true },
-    { name: 'Madhusudan Behera', role: 'Senior Consultant', bio: 'Led engineering at top fintech companies', avatar: '', isPinned: false },
-    { name: 'Mihir Mohapatra', role: 'Senior Consultant', bio: 'CS with deep expertise in MCA and SEBI regulations', avatar: '', isPinned: false },
-  ]);
+  // const [team, setTeam] = useState([
+  //   { name: 'Jeebanjyoti Dashmohapatra', role: 'Founder & Managing Partner', bio: 'M.COM. LLB with 10+ years in corporate law and compliance', avatar: '', isPinned: true },
+  //   { name: 'Jagannath Jena', role: 'Chartered Accountant (CA)', bio: 'CA CS M.COM. with 5+ years Expert in business process automation and scale', avatar: '', isPinned: true },
+  //   { name: 'Madhusudan Behera', role: 'Senior Consultant', bio: 'Led engineering at top fintech companies', avatar: '', isPinned: false },
+  //   { name: 'Mihir Mohapatra', role: 'Senior Consultant', bio: 'CS with deep expertise in MCA and SEBI regulations', avatar: '', isPinned: false },
+  // ]);
+  const [team, setTeam] = useState([]);
 
   useEffect(() => {
     API.get('/team')
