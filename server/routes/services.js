@@ -24,17 +24,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/services/:slug - Single service
-router.get('/:slug', async (req, res) => {
-  try {
-    const service = await Service.findOne({ slug: req.params.slug, isActive: true });
-    if (!service) return res.status(404).json({ success: false, message: 'Service not found' });
-    res.json({ success: true, service });
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
-});
-
 // POST /api/services - Admin create service
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
@@ -46,17 +35,29 @@ router.post('/', protect, adminOnly, async (req, res) => {
 });
 
 // PATCH /api/services/slug/:slug - Admin update by slug (used for priceHidden toggle)
+// NOTE: Must be registered BEFORE GET /:slug to avoid Express treating "slug" as a :slug param
 router.patch('/slug/:slug', protect, adminOnly, async (req, res) => {
   try {
     const service = await Service.findOneAndUpdate(
       { slug: req.params.slug },
-      req.body,
+      { $set: req.body },
       { new: true, runValidators: true }
     );
     if (!service) return res.status(404).json({ success: false, message: 'Service not found' });
     res.json({ success: true, service });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/services/:slug - Single service
+router.get('/:slug', async (req, res) => {
+  try {
+    const service = await Service.findOne({ slug: req.params.slug, isActive: true });
+    if (!service) return res.status(404).json({ success: false, message: 'Service not found' });
+    res.json({ success: true, service });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 

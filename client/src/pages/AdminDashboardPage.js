@@ -306,11 +306,21 @@ function ServicesTab() {
     };
   };
 
-  const toggleHide = (s) => {
+  const toggleHide = async (s) => {
     const ov = overrides[s.id] || {};
-    const next = { ...overrides, [s.id]: { ...ov, hidden: !ov.hidden } };
+    const newVal = !ov.hidden;
+
+    try {
+      // Persist to DB so ALL users see the change immediately
+      await API.patch(`/services/slug/${s.slug}`, { isActive: !newVal });
+    } catch {
+      toast.error('Failed to save \u2014 check server connection');
+      return;
+    }
+
+    const next = { ...overrides, [s.id]: { ...ov, hidden: newVal } };
     saveOverrides(next);
-    toast.success(!ov.hidden ? `"${s.name}" hidden from website` : `"${s.name}" is now visible`);
+    toast.success(newVal ? `"${s.name}" hidden from website` : `"${s.name}" is now visible`);
   };
 
   const togglePriceHide = async (s) => {
@@ -320,13 +330,13 @@ function ServicesTab() {
     try {
       await API.patch(`/services/slug/${s.slug}`, { priceHidden: newVal });
     } catch {
-      toast.error('Failed to save — check server connection');
+      toast.error('Failed to save \u2014 check server connection');
       return;
     }
 
     const next = { ...overrides, [s.id]: { ...ov, priceHidden: newVal } };
     saveOverrides(next);
-    toast.success(newVal ? 'Price hidden — "Contact us" shown instead' : 'Price visible again');
+    toast.success(newVal ? 'Price hidden \u2014 "Contact us" shown instead' : 'Price visible again');
   };
 
   const startEdit = (s) => {
@@ -335,10 +345,22 @@ function ServicesTab() {
     setEditVals({ base: String(sv.price.base), govt: String(sv.price.governmentFee) });
   };
 
-  const savePrice = (s) => {
+  const savePrice = async (s) => {
     const base = parseFloat(editVals.base);
     const governmentFee = parseFloat(editVals.govt);
     if (isNaN(base) || base < 0) return toast.error('Enter a valid base price');
+
+    try {
+      // Persist price changes to DB so ALL users see updated prices
+      await API.patch(`/services/slug/${s.slug}`, {
+        'price.base': base,
+        'price.governmentFee': isNaN(governmentFee) ? 0 : governmentFee,
+      });
+    } catch {
+      toast.error('Failed to save \u2014 check server connection');
+      return;
+    }
+
     const ov = overrides[s.id] || {};
     saveOverrides({ ...overrides, [s.id]: { ...ov, base, governmentFee: isNaN(governmentFee) ? 0 : governmentFee } });
     setEditing(null);

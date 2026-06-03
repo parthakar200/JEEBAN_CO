@@ -6,7 +6,7 @@ const AuthContext = createContext(null);
 const API = axios.create({ baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api' });
 
 API.interceptors.request.use(config => {
-  const token = localStorage.getItem('if_token');
+  const token = sessionStorage.getItem('if_token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -16,11 +16,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('if_token');
+    const token = sessionStorage.getItem('if_token');
     if (token) {
       API.get('/auth/me')
         .then(res => setUser(res.data.user))
-        .catch(() => localStorage.removeItem('if_token'))
+        .catch(() => sessionStorage.removeItem('if_token'))
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -29,20 +29,20 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const res = await API.post('/auth/login', { email, password });
-    localStorage.setItem('if_token', res.data.token);
+    sessionStorage.setItem('if_token', res.data.token);
     setUser(res.data.user);
     return res.data;
   };
 
   const register = async (data) => {
     const res = await API.post('/auth/register', data);
-    localStorage.setItem('if_token', res.data.token);
+    sessionStorage.setItem('if_token', res.data.token);
     setUser(res.data.user);
     return res.data;
   };
 
   const logout = () => {
-    localStorage.removeItem('if_token');
+    sessionStorage.removeItem('if_token');
     setUser(null);
   };
 
