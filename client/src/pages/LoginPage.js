@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -9,10 +9,21 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const { login } = useAuth();
+   const { login, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') || '/dashboard';
+
+
+   // Add this — redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate(user.role === 'admin' ? '/admin' : redirect, { replace: true });
+    }
+  }, [user, authLoading, navigate, redirect]);
+
+  // Add this — show nothing while checking auth
+  if (authLoading) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
