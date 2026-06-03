@@ -13,6 +13,9 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:3000',
   'http://localhost:3001',
+  'https://jeebanco.vercel.app',
+  'https://jeebanco-git-main-parthasarathikar2002-gmailcoms-projects.vercel.app',
+  'https://jeebanco-krzbgk7a8-parthasarathikar2002-gmailcoms-projects.vercel.app',
 ].filter(Boolean);
 
 app.use(cors({
