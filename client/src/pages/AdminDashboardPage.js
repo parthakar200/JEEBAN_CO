@@ -302,7 +302,7 @@ function ServicesTab() {
       ...s,
       price: { ...s.price, base, governmentFee },
       hidden: ov.hidden ?? false,
-      priceHidden: ov.priceHidden ?? true,
+      priceHidden: ov.priceHidden ?? false,
     };
   };
 
