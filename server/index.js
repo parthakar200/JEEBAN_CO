@@ -51,6 +51,18 @@ app.get('/api/run-seed', (req, res) => {
   });
 });
 
+// route for site map for google console
+app.get('/sitemap.xml', (req, res) => {
+  res.header('Content-Type', 'application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://jeebanco.vercel.app/</loc><priority>1.0</priority></url>
+  <url><loc>https://jeebanco.vercel.app/services</loc><priority>0.9</priority></url>
+  <url><loc>https://jeebanco.vercel.app/about</loc><priority>0.8</priority></url>
+  <url><loc>https://jeebanco.vercel.app/contact</loc><priority>0.7</priority></url>
+</urlset>`);
+});
+
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/jeebanco';
 mongoose.connect(MONGO_URI)
