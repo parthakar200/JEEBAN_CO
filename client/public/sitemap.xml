@@ -9,21 +9,6 @@
     <loc>https://jeebanco.vercel.app/services</loc>
   </url>
 
-  <url>
-    <loc>https://jeebanco.vercel.app/login</loc>
-  </url>
-
-  <url>
-    <loc>https://jeebanco.vercel.app/register</loc>
-  </url>
-
-  <url>
-    <loc>https://jeebanco.vercel.app/dashboard</loc>
-  </url>
-
-  <url>
-    <loc>https://jeebanco.vercel.app/admin</loc>
-  </url>
 
   <url>
     <loc>https://jeebanco.vercel.app/contact</loc>

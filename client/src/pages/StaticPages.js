@@ -30,12 +30,12 @@ export function TermsPage() {
       </div>
       <div className="container" style={{ padding: '48px 24px', maxWidth: 800 }}>
         {[
-          { title: '1. Acceptance of Terms', content: 'By accessing and using the IndiaFilings platform, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using IndiaFilings services, you shall be subject to any posted guidelines or rules applicable to such services.' },
-          { title: '2. Services', content: 'IndiaFilings provides online corporate and compliance services including but not limited to company registration, GST filing, trademark registration, and income tax filing. All services are subject to applicable government regulations and fees.' },
+          { title: '1. Acceptance of Terms', content: 'By accessing and using the Jeeban & Co. platform, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using Jeeban & Co. services, you shall be subject to any posted guidelines or rules applicable to such services.' },
+          { title: '2. Services', content: 'Jeeban & Co provides online corporate and compliance services including but not limited to company registration, GST filing, trademark registration, and income tax filing. All services are subject to applicable government regulations and fees.' },
           { title: '3. User Accounts', content: 'To access certain features of the platform, you must register for an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.' },
           { title: '4. Payment & Refunds', content: 'All payments are processed securely. Professional fees are non-refundable once work has commenced. Government fees are non-refundable once submitted. In case of service failure due to our error, full refund of professional fees will be issued within 7 business days.' },
-          { title: '5. Privacy', content: 'Your use of IndiaFilings is also governed by our Privacy Policy, which is incorporated into these terms by reference. We collect and process your personal data in accordance with applicable data protection laws.' },
-          { title: '6. Limitation of Liability', content: 'IndiaFilings shall not be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses resulting from your use of the service.' },
+          { title: '5. Privacy', content: 'Your use of Jeeban & Co. is also governed by our Privacy Policy, which is incorporated into these terms by reference. We collect and process your personal data in accordance with applicable data protection laws.' },
+          { title: '6. Limitation of Liability', content: 'Jeeban & Co. shall not be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses resulting from your use of the service.' },
           { title: '7. Governing Law', content: 'These Terms shall be governed and construed in accordance with the laws of India. Any disputes arising shall be subject to the exclusive jurisdiction of courts in Chennai, Tamil Nadu.' },
         ].map(section => (
           <div key={section.title} style={{ marginBottom: 32 }}>
@@ -64,8 +64,8 @@ export function PrivacyPage() {
           { title: 'Information Sharing', content: 'We do not sell your personal information. We share your information only with government authorities as required for service delivery, service providers who assist us in operations, and legal authorities when required by law.' },
           { title: 'Data Security', content: 'We implement industry-standard security measures including SSL encryption, access controls, and regular security audits. We are ISO 27001:2022 certified for information security management.' },
           { title: 'Data Retention', content: 'We retain your personal information for as long as necessary to provide services and comply with legal obligations. You may request deletion of your account data subject to regulatory requirements.' },
-          { title: 'Your Rights', content: 'You have the right to access, correct, or delete your personal information. You may also object to processing or request data portability. Contact us at privacy@indiafilings.com to exercise these rights.' },
-          { title: 'Contact Us', content: 'For privacy-related queries, contact our Data Protection Officer at privacy@indiafilings.com or write to IndiaFilings, No.1, 8th Floor, Arihant Nitco Park, Rajiv Gandhi Salai, Perungudi, Chennai – 600096.' },
+          { title: 'Your Rights', content: 'You have the right to access, correct, or delete your personal information. You may also object to processing or request data portability. Contact us at privacy@jeebanco.com to exercise these rights.' },
+          { title: 'Contact Us', content: 'For privacy-related queries, contact our Data Protection Officer at privacy@jeebanco.com or write to Jeeban & Co., No.1, 8th Floor, Arihant Nitco Park, Rajiv Gandhi Salai, Perungudi, Chennai – 600096.' },
         ].map(section => (
           <div key={section.title} style={{ marginBottom: 32 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10, color: '#0f172a' }}>{section.title}</h2>
