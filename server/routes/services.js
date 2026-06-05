@@ -83,4 +83,13 @@ router.get('/category/:cat', async (req, res) => {
   }
 });
 
+router.delete('/:id', protect, adminOnly, async (req, res) => {
+  try {
+    await Service.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;

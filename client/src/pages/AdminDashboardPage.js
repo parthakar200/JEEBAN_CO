@@ -174,9 +174,17 @@ function LeadsTab() {
 
 // ─── Services Tab ────────────────────────────────────────────────────────────
 
-const EMPTY_SERVICE = {
-  id: '', name: '', icon: '📄', category: 'startup', shortDescription: '',
-  price: { base: 0, governmentFee: 0 }, timeline: '', isPopular: false,
+const EMPTY_SERVICE = { 
+  name: '', 
+  description: '', 
+  shortDescription: '', 
+  category: 'startup', 
+  price: { base: 0, gst: 18, governmentFee: 0 }, 
+  icon: '', 
+  timeline: '', 
+  isPopular: false, 
+  isActive: true, 
+  priceHidden: true 
 };
 
 const CATEGORY_OPTIONS = [
@@ -368,23 +376,36 @@ function ServicesTab() {
     toast.success('Price updated!');
   };
 
-  const addCustomService = () => {
-    if (!newSvc.name.trim()) return toast.error('Service name is required');
-    if (!newSvc.price.base && newSvc.price.base !== 0) return toast.error('Enter a base price');
-    const id = 'custom_' + Date.now();
-    const slug = newSvc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const svc = { ...newSvc, id, slug, rating: 4.5, reviewCount: 0 };
-    saveCustom([...customServices, svc]);
+  const addCustomService = async () => {
+  if (!newSvc.name.trim()) return toast.error('Service name is required');
+  if (!newSvc.price.base && newSvc.price.base !== 0) return toast.error('Enter a base price');
+  if (!newSvc.description.trim()) return toast.error('Description is required');
+
+  const slug = newSvc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const payload = { ...newSvc, slug };
+
+  try {
+    await API.post('/services', payload);
     setNewSvc(EMPTY_SERVICE);
     setShowAddForm(false);
+    window.dispatchEvent(new Event('admin_service_update')); // refresh ServicesContext
     toast.success('New service added to website!');
-  };
+  } catch (err) {
+    const msg = err?.response?.data?.message || 'Failed to save — check server connection';
+    toast.error(msg);
+  }
+};
 
-  const deleteCustom = (id) => {
-    if (!window.confirm('Remove this custom service?')) return;
-    saveCustom(customServices.filter(s => s.id !== id));
+  const deleteCustom = async (id) => {
+  if (!window.confirm('Remove this service?')) return;
+  try {
+    await API.delete(`/services/${id}`);
+    window.dispatchEvent(new Event('admin_service_update'));
     toast.success('Service removed');
-  };
+  } catch {
+    toast.error('Failed to delete');
+  }
+};
 
   const allServices = [...SERVICES_DATA, ...customServices];
   const inp = { padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, width: '100%', boxSizing: 'border-box' };
@@ -433,10 +454,16 @@ function ServicesTab() {
                 onChange={e => setNewSvc({ ...newSvc, price: { ...newSvc.price, governmentFee: parseFloat(e.target.value) || 0 } })} />
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 5 }}>Short Description</label>
-              <input style={inp} placeholder="Brief description shown on service cards" value={newSvc.shortDescription}
-                onChange={e => setNewSvc({ ...newSvc, shortDescription: e.target.value })} />
-            </div>
+  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 5 }}>Description</label>
+  <input style={inp} placeholder="Full description (required)" value={newSvc.description}
+    onChange={e => setNewSvc({ ...newSvc, description: e.target.value })} />
+</div>
+
+<div style={{ gridColumn: '1 / -1' }}>
+  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 5 }}>Short Description</label>
+  <input style={inp} placeholder="Brief description shown on service cards" value={newSvc.shortDescription}
+    onChange={e => setNewSvc({ ...newSvc, shortDescription: e.target.value })} />
+</div>
             <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: 10 }}>
               <input type="checkbox" id="isPopular" checked={newSvc.isPopular}
                 onChange={e => setNewSvc({ ...newSvc, isPopular: e.target.checked })} />
