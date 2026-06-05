@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API } from '../context/AuthContext';
@@ -175,6 +175,8 @@ function LeadsTab() {
 
 // ─── Services Tab ────────────────────────────────────────────────────────────
 
+const editSectionRef = useRef(null);
+
 const EMPTY_SERVICE = { 
   name: '', 
   description: '', 
@@ -219,7 +221,8 @@ function ServicesTab() {
   };
 
   const startEditContent = (s, tab) => {
-    const co = contentOverrides[s.id] || {};
+    const id = s._id || s.id;
+    const co = contentOverrides[id] || {};
     let draft;
     if (tab === 'overview') {
       draft = [...(co.features ?? s.features ?? [])];
@@ -232,7 +235,8 @@ function ServicesTab() {
       ]).map(f => ({ ...f }));
     }
     setContentDraft(draft);
-    setEditingContent({ serviceId: s.id, tab, serviceName: s.name });
+    setEditingContent({ serviceId: id, tab, serviceName: s.name });
+    setTimeout(() => editSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   };
 
   const saveContentDraft = () => {
@@ -266,14 +270,17 @@ function ServicesTab() {
   };
 
   const startEditDocs = (s) => {
-    const current = docOverrides[s.id] ?? s.documents ?? [];
+    const id = s._id || s.id;
+    const current = docOverrides[id] ?? s.documents ?? [];
     setDocDraft([...current]);
-    setEditingDocs(s.id);
+    setEditingDocs(id);
+    setTimeout(() => editSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   };
 
   const saveDocDraft = (s) => {
+    const id = s._id || s.id;
     const cleaned = docDraft.map(d => d.trim()).filter(Boolean);
-    saveDocOverrides({ ...docOverrides, [s.id]: cleaned });
+    saveDocOverrides({ ...docOverrides, [id]: cleaned });
     setEditingDocs(null);
     toast.success('Documents updated!');
   };
@@ -540,10 +547,11 @@ function ServicesTab() {
         </div>
       </Card>
 
+      <div ref={editSectionRef}>
       {/* Document editor modal */}
       {editingDocs && (
         <DocsEditor
-          svc={allServices.find(s => s.id === editingDocs)}
+          svc={allServices.find(s => (s._id || s.id) === editingDocs)}
           docDraft={docDraft}
           setDocDraft={setDocDraft}
           onSave={saveDocDraft}
@@ -561,6 +569,7 @@ function ServicesTab() {
           onClose={() => { setEditingContent(null); setContentDraft(null); }}
         />
       )}
+      </div>
     </div>
   );
 }
