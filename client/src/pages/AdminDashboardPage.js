@@ -201,6 +201,7 @@ const CATEGORY_OPTIONS = [
 
 function ServicesTab() {
   const editSectionRef = useRef(null);
+  const [openDropdown, setOpenDropdown] = useState(null);
   const STORAGE_KEY = 'admin_service_overrides';
   // const CUSTOM_KEY  = 'admin_custom_services';
   const DOC_KEY      = 'admin_service_documents';
@@ -509,26 +510,30 @@ function ServicesTab() {
       {/* Edit dropdown */}
       <td style={{ padding: '11px 14px' }}>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          <details style={{ position: 'relative' }}>
-            <summary style={{ background: '#f1f5f9', border: 'none', borderRadius: 20, padding: '5px 16px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#475569', listStyle: 'none' }}>
-              ✏️ Edit ▾
-            </summary>
-            <div style={{ position: 'absolute', left: 0, top: '110%', background: 'white', border: '1px solid #e2e8f0', borderRadius: 10, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 99, minWidth: 150, padding: 6 }}>
-              {[
-                ['📄 Docs', () => startEditDocs(s)],
-                ['✅ Overview', () => startEditContent(s, 'overview')],
-                ['🔢 Process', () => startEditContent(s, 'process')],
-                ['❓ FAQs', () => startEditContent(s, 'faqs')],
-              ].map(([label, action]) => (
-                <button key={label} onClick={action}
-                  style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '7px 12px', fontSize: 13, cursor: 'pointer', borderRadius: 7, color: '#0f172a' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'none'}>
-                  {label}
-                </button>
-              ))}
-            </div>
-          </details>
+          <div style={{ position: 'relative' }}>
+  <button
+    onClick={() => setOpenDropdown(openDropdown === s._id ? null : s._id)}
+    style={{ background: '#f1f5f9', border: 'none', borderRadius: 20, padding: '5px 16px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#475569' }}>
+    ✏️ Edit ▾
+  </button>
+  {openDropdown === s._id && (
+    <div style={{ position: 'absolute', left: 0, top: '110%', background: 'white', border: '1px solid #e2e8f0', borderRadius: 10, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 99, minWidth: 150, padding: 6 }}>
+      {[
+        ['📄 Docs', () => { startEditDocs(s); setOpenDropdown(null); }],
+        ['✅ Overview', () => { startEditContent(s, 'overview'); setOpenDropdown(null); }],
+        ['🔢 Process', () => { startEditContent(s, 'process'); setOpenDropdown(null); }],
+        ['❓ FAQs', () => { startEditContent(s, 'faqs'); setOpenDropdown(null); }],
+      ].map(([label, action]) => (
+        <button key={label} onClick={action}
+          style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '7px 12px', fontSize: 13, cursor: 'pointer', borderRadius: 7, color: '#0f172a' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+          onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+          {label}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
           {isCustom && (
             <button onClick={() => deleteCustom(s._id || s.id)}
