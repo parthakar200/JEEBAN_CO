@@ -286,8 +286,8 @@ function ServicesTab() {
 
   const [overrides, setOverrides] = useState(loadOverrides);
   const [customServices ] = useState(loadCustom);
-  const [editing, setEditing] = useState(null);
-  const [editVals, setEditVals] = useState({ base: '', govt: '' });
+  // const [editing, setEditing] = useState(null);
+  // const [editVals, setEditVals] = useState({ base: '', govt: '' });
   const [showAddForm, setShowAddForm] = useState(false);
   const [newSvc, setNewSvc] = useState(EMPTY_SERVICE);
 
@@ -328,33 +328,33 @@ function ServicesTab() {
   };
 
 
-  const startEdit = (s) => {
-    const sv = getService(s);
-    setEditing(s.id);
-    setEditVals({ base: String(sv.price.base), govt: String(sv.price.governmentFee) });
-  };
+  // const startEdit = (s) => {
+  //   const sv = getService(s);
+  //   setEditing(s.id);
+  //   setEditVals({ base: String(sv.price.base), govt: String(sv.price.governmentFee) });
+  // };
 
-  const savePrice = async (s) => {
-    const base = parseFloat(editVals.base);
-    const governmentFee = parseFloat(editVals.govt);
-    if (isNaN(base) || base < 0) return toast.error('Enter a valid base price');
+  // const savePrice = async (s) => {
+  //   const base = parseFloat(editVals.base);
+  //   const governmentFee = parseFloat(editVals.govt);
+  //   if (isNaN(base) || base < 0) return toast.error('Enter a valid base price');
 
-    try {
-      // Persist price changes to DB so ALL users see updated prices
-      await API.patch(`/services/slug/${s.slug}`, {
-        'price.base': base,
-        'price.governmentFee': isNaN(governmentFee) ? 0 : governmentFee,
-      });
-    } catch {
-      toast.error('Failed to save \u2014 check server connection');
-      return;
-    }
+  //   try {
+  //     // Persist price changes to DB so ALL users see updated prices
+  //     await API.patch(`/services/slug/${s.slug}`, {
+  //       'price.base': base,
+  //       'price.governmentFee': isNaN(governmentFee) ? 0 : governmentFee,
+  //     });
+  //   } catch {
+  //     toast.error('Failed to save \u2014 check server connection');
+  //     return;
+  //   }
 
-    const ov = overrides[s.id] || {};
-    saveOverrides({ ...overrides, [s.id]: { ...ov, base, governmentFee: isNaN(governmentFee) ? 0 : governmentFee } });
-    setEditing(null);
-    toast.success('Price updated!');
-  };
+  //   const ov = overrides[s.id] || {};
+  //   saveOverrides({ ...overrides, [s.id]: { ...ov, base, governmentFee: isNaN(governmentFee) ? 0 : governmentFee } });
+  //   setEditing(null);
+  //   toast.success('Price updated!');
+  // };
 
   const addCustomService = async () => {
   if (!newSvc.name.trim()) return toast.error('Service name is required');
