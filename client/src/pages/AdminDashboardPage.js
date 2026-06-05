@@ -175,8 +175,6 @@ function LeadsTab() {
 
 // ─── Services Tab ────────────────────────────────────────────────────────────
 
-const editSectionRef = useRef(null);
-
 const EMPTY_SERVICE = { 
   name: '', 
   description: '', 
@@ -202,6 +200,7 @@ const CATEGORY_OPTIONS = [
 ];
 
 function ServicesTab() {
+  const editSectionRef = useRef(null);
   const STORAGE_KEY = 'admin_service_overrides';
   // const CUSTOM_KEY  = 'admin_custom_services';
   const DOC_KEY      = 'admin_service_documents';
