@@ -285,7 +285,7 @@ function ServicesTab() {
   };
 
   const [overrides, setOverrides] = useState(loadOverrides);
-  const [customServices, setCustomServices] = useState(loadCustom);
+  const [customServices ] = useState(loadCustom);
   const [editing, setEditing] = useState(null);
   const [editVals, setEditVals] = useState({ base: '', govt: '' });
   const [showAddForm, setShowAddForm] = useState(false);
@@ -297,11 +297,6 @@ function ServicesTab() {
     window.dispatchEvent(new Event('admin_service_update'));
   };
 
-  const saveCustom = (next) => {
-    setCustomServices(next);
-    localStorage.setItem(CUSTOM_KEY, JSON.stringify(next));
-    window.dispatchEvent(new Event('admin_service_update'));
-  };
 
   const getService = (s) => {
     const ov = overrides[s.id] || {};
@@ -332,21 +327,6 @@ function ServicesTab() {
     toast.success(newVal ? `"${s.name}" hidden from website` : `"${s.name}" is now visible`);
   };
 
-  const togglePriceHide = async (s) => {
-    const ov = overrides[s.id] || {};
-    const newVal = !ov.priceHidden;
-
-    try {
-      await API.patch(`/services/slug/${s.slug}`, { priceHidden: newVal });
-    } catch {
-      toast.error('Failed to save \u2014 check server connection');
-      return;
-    }
-
-    const next = { ...overrides, [s.id]: { ...ov, priceHidden: newVal } };
-    saveOverrides(next);
-    toast.success(newVal ? 'Price hidden \u2014 "Contact us" shown instead' : 'Price visible again');
-  };
 
   const startEdit = (s) => {
     const sv = getService(s);
@@ -554,12 +534,12 @@ function ServicesTab() {
                       </button>
                     </td>
                     {/* Price toggle */}
-                    <td style={{ padding: '11px 14px' }}>
+                    {/* <td style={{ padding: '11px 14px' }}>
                       <button onClick={() => togglePriceHide(s)}
                         style={{ background: sv.priceHidden ? '#fff7ed' : '#f0f9ff', border: 'none', borderRadius: 20, padding: '4px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: sv.priceHidden ? '#ea580c' : '#0284c7' }}>
                         {sv.priceHidden ? '👁 Hidden' : '₹ Shown'}
                       </button>
-                    </td>
+                    </td> */}
                     {/* Docs + Content */}
                     <td style={{ padding: '11px 14px' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>

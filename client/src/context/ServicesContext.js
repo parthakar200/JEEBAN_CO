@@ -9,7 +9,7 @@ export function ServicesProvider({ children }) {
 
   const fetchServices = useCallback(() => {
     setServicesLoading(true);
-    API.get('/services')
+    API.get('/services?all=true')
       .then(res => setAllServices(res.data.services || res.data || []))
       .catch(() => setAllServices([]))
       .finally(() => setServicesLoading(false));
@@ -21,7 +21,8 @@ export function ServicesProvider({ children }) {
     return () => window.removeEventListener('admin_service_update', fetchServices);
   }, [fetchServices]);
 
-  const services = allServices.filter(s => !s.hidden);
+
+  const services = allServices.filter(s => s.isActive !== false);
   const allServicesIncHidden = allServices;
 
   return (

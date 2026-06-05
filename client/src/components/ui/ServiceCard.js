@@ -57,7 +57,7 @@ export default function ServiceCard({ service, compact = false }) {
         {/* Price */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 14, borderTop: '1px solid #f1f5f9' }}>
           <div>
-            {service.priceHidden ? (
+            {true ? (
               <>
                 <span style={{ fontSize: 11, color: '#94a3b8' }}>Pricing</span>
                 <div style={{ fontSize: compact ? 14 : 16, fontWeight: 700, color: '#1a56db', fontFamily: 'var(--font-heading)', marginTop: 2 }}>

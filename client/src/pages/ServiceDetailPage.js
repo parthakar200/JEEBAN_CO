@@ -25,6 +25,11 @@ export default function ServiceDetailPage() {
   const service = services.find(s => s.slug === slug)
     || SERVICES_DATA.find(s => s.slug === slug);
 
+  if (service && service.isActive === false) {
+    navigate('/services');
+    return null;
+  }
+
   if (!service) {
     return (
       <div style={{ paddingTop: 'var(--nav-height)', textAlign: 'center', padding: '120px 24px' }}>
@@ -50,7 +55,7 @@ export default function ServiceDetailPage() {
 
   const gstAmount   = service.price.base * 0.18;
   const totalPrice  = service.price.base + gstAmount + (service.price.governmentFee || 0);
-  const priceHidden = service.priceHidden ?? false;
+  const priceHidden = true;
 
   const handleGetStarted = () => {
     navigate('/register');
