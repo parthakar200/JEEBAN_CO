@@ -298,33 +298,27 @@ function ServicesTab() {
 
 
   const getService = (s) => {
-    const ov = overrides[s.id] || {};
-    const base = ov.base !== undefined ? ov.base : s.price.base;
-    const governmentFee = ov.governmentFee !== undefined ? ov.governmentFee : (s.price.governmentFee || 0);
-    return {
-      ...s,
-      price: { ...s.price, base, governmentFee },
-      hidden: ov.hidden ?? false,
-      priceHidden: ov.priceHidden ?? false,
-    };
+  const ov = overrides[s._id || s.id] || {};
+  const base = ov.base !== undefined ? ov.base : s.price.base;
+  const governmentFee = ov.governmentFee !== undefined ? ov.governmentFee : (s.price.governmentFee || 0);
+  return {
+    ...s,
+    hidden: s.isActive === false,  // ← use DB value directly
+    price: { ...s.price, base, governmentFee },
+    priceHidden: true,
   };
+};
 
   const toggleHide = async (s) => {
-    const ov = overrides[s.id] || {};
-    const newVal = !ov.hidden;
-
-    try {
-      // Persist to DB so ALL users see the change immediately
-      await API.patch(`/services/slug/${s.slug}`, { isActive: !newVal });
-    } catch {
-      toast.error('Failed to save \u2014 check server connection');
-      return;
-    }
-
-    const next = { ...overrides, [s.id]: { ...ov, hidden: newVal } };
-    saveOverrides(next);
-    toast.success(newVal ? `"${s.name}" hidden from website` : `"${s.name}" is now visible`);
-  };
+  const newVal = s.isActive !== false; // if currently active, hide it
+  try {
+    await API.patch(`/services/slug/${s.slug}`, { isActive: !newVal });
+    window.dispatchEvent(new Event('admin_service_update'));
+    toast.success(newVal ? `"${s.name}" hidden` : `"${s.name}" is now visible`);
+  } catch {
+    toast.error('Failed to save — check server connection');
+  }
+};
 
 
   // const startEdit = (s) => {
@@ -489,7 +483,7 @@ function ServicesTab() {
             <tbody>
               {allServices.map(s => {
   const sv = getService(s);
-  const isCustom = s.id?.startsWith('custom_') || !SERVICES_DATA.find(d => d.id === s.id);
+  const isCustom = !SERVICES_DATA.find(d => d.slug === s.slug);
   return (
     <tr key={s.id} style={{ borderTop: '1px solid #f1f5f9', opacity: sv.hidden ? 0.4 : 1, background: isCustom ? '#fffbeb' : 'transparent' }}>
       {/* Service */}
