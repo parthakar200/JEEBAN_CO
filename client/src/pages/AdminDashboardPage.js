@@ -482,110 +482,72 @@ function ServicesTab() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
               <tr style={{ background: '#f8fafc' }}>
-                {['Service', 'Category', 'Base Price', 'Govt Fee', 'Total', 'Visible', 'Price', 'Docs', 'Actions'].map(h => (
+                {['Services', 'Visible','Actions'].map(h => (
                   <th key={h} style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: '#64748b', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {allServices.map(s => {
-                const sv = getService(s);
-                const total = Math.round(sv.price.base + (sv.price.base * 0.18) + (sv.price.governmentFee || 0));
-                const isEditing = editing === s.id;
-                const isCustom = s.id.startsWith('custom_');
-                return (
-                  <tr key={s.id} style={{ borderTop: '1px solid #f1f5f9', opacity: sv.hidden ? 0.4 : 1, background: isCustom ? '#fffbeb' : 'transparent' }}>
-                    <td style={{ padding: '11px 14px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontSize: 18 }}>{s.icon}</span>
-                        <div>
-                          <div style={{ fontWeight: 600, color: '#0f172a', fontSize: 13 }}>{s.name}</div>
-                          {isCustom && <span style={{ fontSize: 10, background: '#fef3c7', color: '#92400e', padding: '1px 6px', borderRadius: 99, fontWeight: 700 }}>CUSTOM</span>}
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{ padding: '11px 14px', color: '#64748b', textTransform: 'capitalize' }}>{s.category}</td>
-                    <td style={{ padding: '11px 14px' }}>
-                      {isEditing ? (
-                        <input type="number" value={editVals.base} onChange={e => setEditVals({ ...editVals, base: e.target.value })}
-                          style={{ width: 80, padding: '4px 8px', border: '1px solid #1a56db', borderRadius: 6, fontSize: 13 }} />
-                      ) : (
-                        <span style={{ fontWeight: 600, color: sv.priceHidden ? '#94a3b8' : '#0f172a' }}>
-                          {sv.priceHidden ? '—' : `₹${sv.price.base.toLocaleString('en-IN')}`}
-                        </span>
-                      )}
-                    </td>
-                    <td style={{ padding: '11px 14px' }}>
-                      {isEditing ? (
-                        <input type="number" value={editVals.govt} onChange={e => setEditVals({ ...editVals, govt: e.target.value })}
-                          style={{ width: 72, padding: '4px 8px', border: '1px solid #e2e8f0', borderRadius: 6, fontSize: 13 }} />
-                      ) : (
-                        <span style={{ color: '#64748b' }}>₹{(sv.price.governmentFee || 0).toLocaleString('en-IN')}</span>
-                      )}
-                    </td>
-                    <td style={{ padding: '11px 14px', fontWeight: 700, color: sv.priceHidden ? '#94a3b8' : '#1a56db' }}>
-                      {sv.priceHidden ? 'Hidden' : `₹${total.toLocaleString('en-IN')}`}
-                    </td>
-                    {/* Visible toggle */}
-                    <td style={{ padding: '11px 14px' }}>
-                      <button onClick={() => toggleHide(s)}
-                        style={{ background: sv.hidden ? '#fef2f2' : '#f0fdf4', border: 'none', borderRadius: 20, padding: '4px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: sv.hidden ? '#ef4444' : '#16a34a' }}>
-                        {sv.hidden ? '✗ Hidden' : '✓ Shown'}
-                      </button>
-                    </td>
-                    {/* Price toggle */}
-                    {/* <td style={{ padding: '11px 14px' }}>
-                      <button onClick={() => togglePriceHide(s)}
-                        style={{ background: sv.priceHidden ? '#fff7ed' : '#f0f9ff', border: 'none', borderRadius: 20, padding: '4px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: sv.priceHidden ? '#ea580c' : '#0284c7' }}>
-                        {sv.priceHidden ? '👁 Hidden' : '₹ Shown'}
-                      </button>
-                    </td> */}
-                    {/* Docs + Content */}
-                    <td style={{ padding: '11px 14px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                        <button onClick={() => startEditDocs(s)}
-                          style={{ background: '#f0f9ff', border: 'none', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 11, fontWeight: 600, color: '#0284c7', whiteSpace: 'nowrap' }}>
-                          📄 Docs ({(docOverrides[s.id] ?? s.documents ?? []).length})
-                        </button>
-                        <button onClick={() => startEditContent(s, 'overview')}
-                          style={{ background: '#f0fdf4', border: 'none', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 11, fontWeight: 600, color: '#16a34a', whiteSpace: 'nowrap' }}>
-                          ✅ Overview
-                        </button>
-                        <button onClick={() => startEditContent(s, 'process')}
-                          style={{ background: '#fffbeb', border: 'none', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 11, fontWeight: 600, color: '#d97706', whiteSpace: 'nowrap' }}>
-                          🔢 Process
-                        </button>
-                        <button onClick={() => startEditContent(s, 'faqs')}
-                          style={{ background: '#faf5ff', border: 'none', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontSize: 11, fontWeight: 600, color: '#7c3aed', whiteSpace: 'nowrap' }}>
-                          ❓ FAQs
-                        </button>
-                      </div>
-                    </td>
-                    {/* Actions */}
-                    <td style={{ padding: '11px 14px' }}>
-                      {isEditing ? (
-                        <div style={{ display: 'flex', gap: 6 }}>
-                          <button onClick={() => savePrice(s)} className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 12 }}>Save</button>
-                          <button onClick={() => setEditing(null)} style={{ background: '#f1f5f9', border: 'none', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', fontSize: 12 }}>✕</button>
-                        </div>
-                      ) : (
-                        <div style={{ display: 'flex', gap: 6 }}>
-                          <button onClick={() => startEdit(s)}
-                            style={{ background: '#f1f5f9', border: 'none', borderRadius: 8, padding: '4px 10px', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#475569' }}>
-                            ✏️ Price
-                          </button>
-                          {isCustom && (
-                            <button onClick={() => deleteCustom(s.id)}
-                              style={{ background: '#fef2f2', border: 'none', borderRadius: 8, padding: '4px 8px', cursor: 'pointer', fontSize: 13 }}>
-                              🗑
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
+  const sv = getService(s);
+  const isCustom = s.id?.startsWith('custom_') || !SERVICES_DATA.find(d => d.id === s.id);
+  return (
+    <tr key={s.id} style={{ borderTop: '1px solid #f1f5f9', opacity: sv.hidden ? 0.4 : 1, background: isCustom ? '#fffbeb' : 'transparent' }}>
+      {/* Service */}
+      <td style={{ padding: '11px 14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 18 }}>{s.icon}</span>
+          <div>
+            <div style={{ fontWeight: 600, color: '#0f172a', fontSize: 13 }}>{s.name}</div>
+            <div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'capitalize' }}>{s.category}</div>
+            {isCustom && <span style={{ fontSize: 10, background: '#fef3c7', color: '#92400e', padding: '1px 6px', borderRadius: 99, fontWeight: 700 }}>CUSTOM</span>}
+          </div>
+        </div>
+      </td>
+
+      {/* Visible toggle */}
+      <td style={{ padding: '11px 14px' }}>
+        <button onClick={() => toggleHide(s)}
+          style={{ background: sv.hidden ? '#fef2f2' : '#f0fdf4', border: 'none', borderRadius: 20, padding: '4px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: sv.hidden ? '#ef4444' : '#16a34a' }}>
+          {sv.hidden ? '✕ Hidden' : '✓ Shown'}
+        </button>
+      </td>
+
+      {/* Edit dropdown */}
+      <td style={{ padding: '11px 14px' }}>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <details style={{ position: 'relative' }}>
+            <summary style={{ background: '#f1f5f9', border: 'none', borderRadius: 20, padding: '5px 16px', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#475569', listStyle: 'none' }}>
+              ✏️ Edit ▾
+            </summary>
+            <div style={{ position: 'absolute', left: 0, top: '110%', background: 'white', border: '1px solid #e2e8f0', borderRadius: 10, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 99, minWidth: 150, padding: 6 }}>
+              {[
+                ['📄 Docs', () => startEditDocs(s)],
+                ['✅ Overview', () => startEditContent(s, 'overview')],
+                ['🔢 Process', () => startEditContent(s, 'process')],
+                ['❓ FAQs', () => startEditContent(s, 'faqs')],
+              ].map(([label, action]) => (
+                <button key={label} onClick={action}
+                  style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '7px 12px', fontSize: 13, cursor: 'pointer', borderRadius: 7, color: '#0f172a' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </details>
+
+          {isCustom && (
+            <button onClick={() => deleteCustom(s._id || s.id)}
+              style={{ background: '#fef2f2', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 13 }}>
+              🗑
+            </button>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+})}
             </tbody>
           </table>
         </div>
