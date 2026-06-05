@@ -535,12 +535,10 @@ function ServicesTab() {
   )}
 </div>
 
-          {isCustom && (
             <button onClick={() => deleteCustom(s._id || s.id)}
               style={{ background: '#fef2f2', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 13 }}>
               🗑
             </button>
-          )}
         </div>
       </td>
     </tr>
