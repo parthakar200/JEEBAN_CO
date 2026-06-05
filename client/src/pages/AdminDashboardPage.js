@@ -283,18 +283,12 @@ function ServicesTab() {
   };
   
 
-  const [overrides, setOverrides] = useState(loadOverrides);
+  const [overrides ] = useState(loadOverrides);
   const { allServicesIncHidden } = useServices();
   // const [editing, setEditing] = useState(null);
   // const [editVals, setEditVals] = useState({ base: '', govt: '' });
   const [showAddForm, setShowAddForm] = useState(false);
   const [newSvc, setNewSvc] = useState(EMPTY_SERVICE);
-
-  const saveOverrides = (next) => {
-    setOverrides(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    window.dispatchEvent(new Event('admin_service_update'));
-  };
 
 
   const getService = (s) => {
