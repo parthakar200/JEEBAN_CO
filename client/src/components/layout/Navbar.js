@@ -7,6 +7,7 @@ import { useServices } from "../../context/ServicesContext";
 import newAdvLogo from "../../assets/images/newAdvLogo.png";
 
 export default function Navbar() {
+  const { services } = useServices();
   const NAV_LINKS = [
     {
       label: "Startup",
@@ -70,7 +71,7 @@ export default function Navbar() {
       })),
   }));
 
-  const { services } = useServices();
+  
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
