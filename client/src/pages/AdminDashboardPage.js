@@ -5,6 +5,7 @@ import { API } from '../context/AuthContext';
 import { SERVICES_DATA } from '../utils/servicesData';
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
+import { useServices } from '../context/ServicesContext';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -200,7 +201,7 @@ const CATEGORY_OPTIONS = [
 
 function ServicesTab() {
   const STORAGE_KEY = 'admin_service_overrides';
-  const CUSTOM_KEY  = 'admin_custom_services';
+  // const CUSTOM_KEY  = 'admin_custom_services';
   const DOC_KEY      = 'admin_service_documents';
   const CONTENT_KEY  = 'admin_service_content';
 
@@ -280,12 +281,10 @@ function ServicesTab() {
   const loadOverrides = () => {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
   };
-  const loadCustom = () => {
-    try { return JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; } catch { return []; }
-  };
+  
 
   const [overrides, setOverrides] = useState(loadOverrides);
-  const [customServices ] = useState(loadCustom);
+  const { allServicesIncHidden } = useServices();
   // const [editing, setEditing] = useState(null);
   // const [editVals, setEditVals] = useState({ base: '', govt: '' });
   const [showAddForm, setShowAddForm] = useState(false);
@@ -387,7 +386,7 @@ function ServicesTab() {
   }
 };
 
-  const allServices = [...SERVICES_DATA, ...customServices];
+  const allServices = allServicesIncHidden;
   const inp = { padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 13, width: '100%', boxSizing: 'border-box' };
 
   return (
