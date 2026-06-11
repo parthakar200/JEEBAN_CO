@@ -37,9 +37,9 @@ export default function App() {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   useEffect(() => {
-    const accepted = localStorage.getItem('disclaimerAccepted');
-    if (!accepted) setShowDisclaimer(true);
-  }, []);
+  const accepted = sessionStorage.getItem('disclaimerAccepted');
+  if (!accepted) setShowDisclaimer(true);
+}, []);
 
   return (
     <Router>

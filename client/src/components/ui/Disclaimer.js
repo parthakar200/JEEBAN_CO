@@ -4,11 +4,11 @@ const Disclaimer = ({ onAccept }) => {
   const [accepted, setAccepted] = useState(false);
 
   const handleProceed = () => {
-    if (accepted) {
-      localStorage.setItem('disclaimerAccepted', 'true');
-      onAccept();
-    }
-  };
+  if (accepted) {
+    sessionStorage.setItem('disclaimerAccepted', 'true'); 
+    onAccept();
+  }
+};
 
   return (
     <div style={styles.overlay}>
