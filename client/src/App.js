@@ -59,27 +59,24 @@ export default function App() {
               error: { iconTheme: { primary: '#ef4444', secondary: 'white' } },
             }}
           />
-          {showDisclaimer ? (
-            <Disclaimer onAccept={() => setShowDisclaimer(false)} />
-          ) : (
-            <Layout>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/services/:slug" element={<ServiceDetailPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/admin" element={<AdminDashboardPage />} />
-                <Route path="/checkout/:serviceId" element={<CheckoutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/terms" element={<TermsPage />} />
-                <Route path="/privacy" element={<PrivacyPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Layout>
-          )}
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/admin" element={<AdminDashboardPage />} />
+              <Route path="/checkout/:serviceId" element={<CheckoutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Layout>
+          {showDisclaimer && <Disclaimer onAccept={() => setShowDisclaimer(false)} />}
         </ServicesProvider>
       </AuthProvider>
     </Router>
