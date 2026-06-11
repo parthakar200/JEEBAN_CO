@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
@@ -34,7 +33,6 @@ function Layout({ children }) {
   );
 }
 
-
 export default function App() {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
@@ -43,43 +41,46 @@ export default function App() {
     if (!accepted) setShowDisclaimer(true);
   }, []);
 
-  if (showDisclaimer) return <Disclaimer />;
   return (
     <Router>
       <AuthProvider>
         <ServicesProvider>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              fontFamily: 'var(--font-body)',
-              fontSize: '14px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 20px rgba(0,0,0,.12)',
-            },
-            success: { iconTheme: { primary: '#16a34a', secondary: 'white' } },
-            error: { iconTheme: { primary: '#ef4444', secondary: 'white' } },
-          }}
-        />
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/:slug" element={<ServiceDetailPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/checkout/:serviceId" element={<CheckoutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Layout>
-      </ServicesProvider>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                fontFamily: 'var(--font-body)',
+                fontSize: '14px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 20px rgba(0,0,0,.12)',
+              },
+              success: { iconTheme: { primary: '#16a34a', secondary: 'white' } },
+              error: { iconTheme: { primary: '#ef4444', secondary: 'white' } },
+            }}
+          />
+          {showDisclaimer ? (
+            <Disclaimer onAccept={() => setShowDisclaimer(false)} />
+          ) : (
+            <Layout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/services/:slug" element={<ServiceDetailPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/admin" element={<AdminDashboardPage />} />
+                <Route path="/checkout/:serviceId" element={<CheckoutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Layout>
+          )}
+        </ServicesProvider>
       </AuthProvider>
     </Router>
   );

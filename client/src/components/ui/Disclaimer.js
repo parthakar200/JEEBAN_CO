@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
-const Disclaimer = () => {
+const Disclaimer = ({ onAccept }) => {
   const [accepted, setAccepted] = useState(false);
-  const navigate = useNavigate();
 
   const handleProceed = () => {
     if (accepted) {
       localStorage.setItem('disclaimerAccepted', 'true');
-      navigate('/home');
+      onAccept();
     }
   };
 
@@ -67,7 +65,10 @@ const styles = {
   },
   title: { color: '#1a56db', marginBottom: '20px' },
   text: { color: '#333', lineHeight: '1.7', marginBottom: '16px' },
-  checkLabel: { display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '20px' },
+  checkLabel: {
+    display: 'flex', alignItems: 'center',
+    cursor: 'pointer', marginBottom: '20px'
+  },
   btnActive: {
     background: 'transparent', border: '2px solid #1a56db', color: '#1a56db',
     padding: '10px 24px', cursor: 'pointer', fontWeight: 'bold', letterSpacing: '1px',
