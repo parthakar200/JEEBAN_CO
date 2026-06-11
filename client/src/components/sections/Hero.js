@@ -54,7 +54,7 @@ export default function Hero() {
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16a34a', position: 'relative' }}>
               <div style={{ position: 'absolute', inset: -4, borderRadius: '50%', border: '2px solid rgba(22,163,74,.3)', animation: 'pulse-ring 1.5s infinite' }} />
             </div>
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>India's Largest AI-Powered Compliance Platform</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>Odisha's Trusted Tax, GST & Legal Consultancy</span>
           </div>
 
           {/* Headline */}
