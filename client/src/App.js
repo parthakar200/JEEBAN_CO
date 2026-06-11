@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
@@ -16,6 +17,7 @@ import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
 import { NotFoundPage, TermsPage, PrivacyPage } from './pages/StaticPages';
 import { ServicesProvider } from './context/ServicesContext';
+import Disclaimer from './components/ui/Disclaimer';
 import './styles/globals.css';
 
 const AUTH_PATHS = ['/login', '/register'];
@@ -32,7 +34,16 @@ function Layout({ children }) {
   );
 }
 
+
 export default function App() {
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+
+  useEffect(() => {
+    const accepted = localStorage.getItem('disclaimerAccepted');
+    if (!accepted) setShowDisclaimer(true);
+  }, []);
+
+  if (showDisclaimer) return <Disclaimer />;
   return (
     <Router>
       <AuthProvider>
