@@ -8,4 +8,18 @@
   <url><loc>https://www.jeebanco.in/register</loc><priority>0.5</priority></url>
   <url><loc>https://www.jeebanco.in/privacy</loc><priority>0.4</priority></url>
   <url><loc>https://www.jeebanco.in/terms</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/llp-registration</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/gst-registration</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/roc-annual-filing</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/trademark-registration</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/gst-return-filing-monthly</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/itr-filing</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/private-limited-company</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/gst-return-filing</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/dir-3-kyc</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/msme-registration</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/opc-registration</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/fssai-registration</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/payroll-management</loc><priority>0.3</priority></url>
+  <url><loc>https://www.jeebanco.in/services/project-funding</loc><priority>0.3</priority></url>
 </urlset>
