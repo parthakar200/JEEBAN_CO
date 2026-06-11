@@ -134,42 +134,56 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link
-          to="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 3,
-            flexShrink: 0,
-          }}
-        >
-          <div
-            style={{
-              width: 60,
-              height: 36,
-              borderRadius: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontSize: 18,
-              fontWeight: 800,
-              fontFamily: "var(--font-heading)",
-            }}
-          >
-            <img src={newAdvLogo} alt="Advocate Logo" />
-          </div>
-          <span
-            style={{
-              fontSize: 18,
-              fontWeight: 800,
-              fontFamily: "var(--font-heading)",
-              color: "#0f172a",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Jeeban & <span style={{ color: "#1a56db" }}>CO.</span>
-          </span>
-        </Link>
+  to="/"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 3,
+    flexShrink: 0,
+  }}
+>
+  <div
+    style={{
+      width: 60,
+      height: 36,
+      borderRadius: 10,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "white",
+      fontSize: 18,
+      fontWeight: 800,
+      fontFamily: "var(--font-heading)",
+    }}
+  >
+    <img src={newAdvLogo} alt="Advocate Logo" />
+  </div>
+
+  {/* ✅ Wrap in div to stack name + since */}
+  <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
+    <span
+      style={{
+        fontSize: 18,
+        fontWeight: 800,
+        fontFamily: "var(--font-heading)",
+        color: "#0f172a",
+        letterSpacing: "-0.02em",
+      }}
+    >
+      Jeeban & <span style={{ color: "#1a56db" }}>CO.</span>
+    </span>
+    <span
+      style={{
+        fontSize: 12,
+        fontWeight: 500,
+        color: "#64748b",
+        letterSpacing: "0.05em",
+      }}
+    >
+      Since 2020
+    </span>
+  </div>
+</Link>
 
         {/* Desktop Nav */}
         <div
