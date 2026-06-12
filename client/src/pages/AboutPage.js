@@ -5,22 +5,22 @@ import { Helmet } from "react-helmet-async";
 
 const MILESTONES = [
   {
-    year: "2016",
+    year: "2020",
     title: "Founded in Odisha",
     desc: "Started with a mission to simplify business compliance in India",
   },
   {
-    year: "2017",
+    year: "2021",
     title: "1,000 Clients",
     desc: "Reached our first major milestone of satisfied customers",
   },
   {
-    year: "2019",
+    year: "2022",
     title: "Business Expansion",
     desc: "Opened offices in Bhubaneswar, Soro",
   },
   {
-    year: "2021",
+    year: "2024",
     title: "3,000 Clients",
     desc: "Crossed 3K businesses served across India",
   },
@@ -275,7 +275,7 @@ export default function AboutPage() {
               color: "rgba(255,255,255,.8)",
             }}
           >
-            🏆 India's Largest Compliance Platform
+            🏆 Odisha's Trusted Tax, GST & Legal Consultancy
           </div>
           <h1
             style={{
@@ -300,7 +300,7 @@ export default function AboutPage() {
               lineHeight: 1.7,
             }}
           >
-            Since 2016, Jeeban & CO has been on a mission to make business
+            Since 2020, Jeeban & CO has been on a mission to make business
             registration and compliance effortless for every Indian
             entrepreneur.
           </p>
@@ -397,7 +397,7 @@ export default function AboutPage() {
                   marginBottom: 20,
                 }}
               >
-                Jeeban & CO was founded in 2016 by a group of Chartered
+                Jeeban & CO was founded in 2020 by a group of Chartered
                 Accountants and Company Secretaries who saw a critical gap:
                 small businesses were struggling to navigate India's complex
                 regulatory landscape without expensive professional help.

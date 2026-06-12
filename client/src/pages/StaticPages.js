@@ -65,7 +65,7 @@ export function PrivacyPage() {
           { title: 'Data Security', content: 'We implement industry-standard security measures including SSL encryption, access controls, and regular security audits. We are ISO 27001:2022 certified for information security management.' },
           { title: 'Data Retention', content: 'We retain your personal information for as long as necessary to provide services and comply with legal obligations. You may request deletion of your account data subject to regulatory requirements.' },
           { title: 'Your Rights', content: 'You have the right to access, correct, or delete your personal information. You may also object to processing or request data portability. Contact us at privacy@jeebanco.com to exercise these rights.' },
-          { title: 'Contact Us', content: 'For privacy-related queries, contact our Data Protection Officer at privacy@jeebanco.com or write to Jeeban & Co., No.1, 8th Floor, Arihant Nitco Park, Rajiv Gandhi Salai, Perungudi, Chennai – 600096.' },
+          { title: 'Contact Us', content: 'For privacy-related queries, contact our Data Protection Officer at privacy@jeebanco.com or write to Jeeban & Co., 1st Floor, Near Sai Ananta Plaza, Uttareswar, Soro, Baleshwar – 756 045' },
         ].map(section => (
           <div key={section.title} style={{ marginBottom: 32 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10, color: '#0f172a' }}>{section.title}</h2>
